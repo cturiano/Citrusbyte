@@ -1,0 +1,81 @@
+﻿@model Citrusbyte.Models.Device
+
+@{
+   ViewBag.Title = "DetailsGuid";
+}
+
+<div>
+   <h4>Device</h4>
+
+   @Html.ActionLink("Back to List", "Index")
+   @Html.HiddenFor(model => model.Id, new { id = "deviceId", @class = Model.Id })
+
+   <table class="table">
+      <tr>
+         <th>
+            @Html.DisplayNameFor(model => model.Serial)
+         </th>
+         <th>
+            @Html.DisplayNameFor(model => model.Firmware_Version)
+         </th>
+         <th>
+            @Html.DisplayNameFor(model => model.RegistrationDate)
+         </th>
+         <th>Actions</th>
+      </tr>
+      <tr>
+         <td>
+            @Html.DisplayFor(model => model.Serial)
+         </td>
+         <td>
+            @Html.DisplayFor(model => model.Firmware_Version)
+         </td>
+         <td>
+            @($"{new DateTime(Model.RegistrationDate).ToUniversalTime()}")
+         </td>
+         <td>
+            @Html.ActionLink("Edit", "Edit", new { id = Model.Id })
+         </td>
+      </tr>
+   </table>
+</div>
+
+<div>
+   <h5>Readings</h5>
+   <table>
+      <tr>
+         <th>Start Date</th>
+         <th>End Date</th>
+         <th></th>
+      </tr>
+      <tr>
+         <td>
+            <input type="datetime" style="width: 100px;" readonly="readonly" name="startDate" id="startDate" class="datePicker" />
+         </td>
+         <td>
+            <input type="datetime" style="width: 100px;" readonly="readonly" name="endDate" id="endDate" class="datePicker" />
+         </td>
+         <td>
+            <button type="button" onclick="buildReadingsTable()">Filter</button>
+         </td>
+      </tr>
+   </table>
+
+   <div id="tableDiv"></div>    
+   
+   <div id="graph">  
+      <img src="~/Content/images/chartkick.gif" alt="Chart image not available."/>
+   </div>
+</div>
+
+@section Scripts
+{
+   <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+   <script src="~/Scripts/CustomScripts/BuildReadingsTable.js"></script>
+   <script>
+      $(document).ready(function () {
+         buildReadingsTable();
+      });
+   </script>
+   @Scripts.Render("~/bundles/jqueryval");
+}

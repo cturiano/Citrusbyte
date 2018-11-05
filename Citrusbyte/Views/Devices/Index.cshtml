@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Citrusbyte.Models.Device>
+
+@{
+   ViewBag.Title = "Devices";
+}
+
+<h2>Devices</h2>
+
+<div class="float-left">
+   @Html.ActionLink("Create New", "Create")
+</div>
+<div class="float-right">
+   <input type="text" id="searchString"/>
+   <button type="button" onclick="searchGuid()">Search</button>
+</div>
+
+<table class="table">
+   <tr>
+      <th>
+         @Html.DisplayNameFor(model => model.Serial)
+      </th>
+      <th>
+         @Html.DisplayNameFor(model => model.Firmware_Version)
+      </th>
+      <th>
+         @Html.DisplayNameFor(model => model.RegistrationDate)
+      </th>
+      <th>Actions</th>
+   </tr>
+
+   @foreach (var item in Model)
+   {
+      <tr>
+         <td>
+            @Html.DisplayFor(modelItem => item.Serial)
+         </td>
+         <td>
+            @Html.DisplayFor(modelItem => item.Firmware_Version)
+         </td>
+         <td>
+            @($"{new DateTime(item.RegistrationDate).ToUniversalTime()}")
+         </td>
+         <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+         </td>
+      </tr>
+   }
+
+</table>
+
+@section Scripts
+{
+   <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+   <script src="~/Scripts/CustomScripts/SearchGuid.js"></script>
+   @Scripts.Render("~/bundles/jqueryval");
+}

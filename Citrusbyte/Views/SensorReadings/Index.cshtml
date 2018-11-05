@@ -1,0 +1,45 @@
+﻿@model Citrusbyte.Models.SensorReading
+
+@{
+   ViewBag.Title = "Sensor Readings";
+}
+
+<div>
+   <h5>Readings</h5>
+   <table>
+      <tr>
+         <th>Start Date</th>
+         <th>End Date</th>
+         <th></th>
+      </tr>
+      <tr>
+         <td>
+            <input type="datetime" style="width: 100px;" readonly="readonly" name="startDate" id="startDate" class="datePicker" />
+         </td>
+         <td>
+            <input type="datetime" style="width: 100px;" readonly="readonly" name="endDate" id="endDate" class="datePicker" />
+         </td>
+         <td>
+            <button type="button" onclick="buildReadingsTable()">Filter</button>
+         </td>
+      </tr>
+   </table>
+
+   <div id="tableDiv"></div>
+</div>
+
+<p>
+   @Html.ActionLink("Create New", "Create")
+</p>
+
+@section Scripts
+{
+   <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+   <script src="~/Scripts/CustomScripts/BuildReadingsTable.js"></script>
+   <script>
+      $(document).ready(function () {
+         buildReadingsTable();
+      });
+   </script>
+   @Scripts.Render("~/bundles/jqueryval");
+}

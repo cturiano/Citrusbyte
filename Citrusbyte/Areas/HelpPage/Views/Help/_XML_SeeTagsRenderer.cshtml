@@ -1,0 +1,46 @@
+﻿@using System.Text.RegularExpressions
+@using Citrusbyte.Areas.HelpPage
+@using Citrusbyte.Areas.HelpPage.Controllers
+@model string
+
+@{
+   var @index = 0;
+   var @xml = Model ?? "";
+
+   var @seeRegex = new Regex("<( *)see( +)cref=\"([^\"]):([^\"]+)\"( *)/>");//Regex("<see cref=\"T:([^\"]+)\" />");
+   var @xmlSee = @seeRegex.Match(@xml); 
+   var modelDescriptionGenerator = (new HelpController()).Configuration.GetModelDescriptionGenerator(); 
+}
+
+@if (xml != "" && xmlSee != null && xmlSee.Length > 0)
+{
+
+   while (xmlSee != null && xmlSee.Length > 0)
+   {
+
+      @MvcHtmlString.Create(@xml.Substring(@index, @xmlSee.Index - @index))
+
+      var startingIndex = xmlSee.Value.IndexOf(':') + 1;
+      var endIndex = xmlSee.Value.IndexOf('"', startingIndex);
+      var @typeAsText = xmlSee.Value.Substring(startingIndex, endIndex - startingIndex);
+      var thisAssembly = typeof(Citrusbyte.Controllers.HomeController).Assembly;
+      var @tp = thisAssembly.GetType(@typeAsText);
+             
+      if (@tp != null)
+      {
+         var md = modelDescriptionGenerator.GetOrCreateModelDescription(tp);
+         @Html.DisplayFor(m => md.ModelType, "ModelDescriptionLink", new { modelDescription = md })
+      }
+      else
+      {
+         @MvcHtmlString.Create(@typeAsText)
+      }
+      index = xmlSee.Index + xmlSee.Length;
+      xmlSee = xmlSee.NextMatch();
+   }
+   @MvcHtmlString.Create(@xml.Substring(@index, @xml.Length - @index))
+}
+else
+{
+   @MvcHtmlString.Create(@xml);
+}

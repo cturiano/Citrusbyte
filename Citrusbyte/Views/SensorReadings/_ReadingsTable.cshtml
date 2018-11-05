@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Citrusbyte.Models.SensorReading>
+
+<table class="table">
+   <tr>
+      <th>
+         @Html.DisplayNameFor(model => model.OwnerId)
+      </th>
+      <th>
+         @Html.DisplayNameFor(model => model.ReadingTime)
+      </th>
+      <th>
+         @Html.DisplayNameFor(model => model.CO)
+      </th>
+      <th>
+         @Html.DisplayNameFor(model => model.Humidity)
+      </th>
+      <th>
+         @Html.DisplayNameFor(model => model.Temp)
+      </th>
+      <th>
+         @Html.DisplayNameFor(model => model.Status)
+      </th>
+      <th>Actions</th>
+   </tr>
+
+   @foreach (var item in Model) {
+      <tr>
+         <td>
+            @Html.DisplayFor(modelItem => item.OwnerId)
+         </td>
+         <td>
+            @($"{new DateTime(item.ReadingTime)}")
+         </td>
+         <td>
+            @Html.DisplayFor(modelItem => item.CO)
+         </td>
+         <td>
+            @Html.DisplayFor(modelItem => item.Humidity)
+         </td>
+         <td>
+            @Html.DisplayFor(modelItem => item.Temp)
+         </td>
+         <td>
+            @Html.DisplayFor(modelItem => item.Status)
+         </td>
+         <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+         </td>
+      </tr>
+   }
+
+</table>
